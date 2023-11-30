@@ -3,7 +3,6 @@ import './App.css'
 import SectionAbout from './SectionAbout'
 import SectionGallery from './SectionGallery'
 import SectionHero from './SectionHero'
-import { PerspectiveCamera } from '@react-three/drei'
 
 function App() {
 
