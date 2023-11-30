@@ -1,6 +1,6 @@
 # Vite r3f Gallery
 
-demo https://novogrammer.github.io/vite-r3f-gallery/
+demo https://novogrammer.github.io/vite-r3f-scroll-rig-gallery/
 
 
 
