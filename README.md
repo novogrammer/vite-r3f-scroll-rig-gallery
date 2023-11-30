@@ -1,8 +1,11 @@
-# Vite r3f Gallery
+# Vite r3f-scroll-rig Gallery
+
+全画面Canvasでr3fとHTMLと連動させる
 
 demo https://novogrammer.github.io/vite-r3f-scroll-rig-gallery/
 
 
+派生元 https://github.com/novogrammer/vite-r3f-gallery
 
 ## インストール
 ```
