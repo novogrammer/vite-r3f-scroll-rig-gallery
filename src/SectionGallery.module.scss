@@ -1,0 +1,23 @@
+.component{
+  width:100%;
+  border: 0.2vw dashed #000;
+  &__title{
+    font-size:5vw;
+    font-weight:bold;
+  }
+  &__article-list{
+    display:flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap:2.5vw;
+    width:95vw;
+    margin-left:auto;
+    margin-right:auto;
+    
+  }
+  &__article-wrapper{
+    width:30vw;
+    height:20vw;
+    border: 0.2vw dashed #0f0;
+  }
+}
