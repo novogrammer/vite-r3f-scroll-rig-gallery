@@ -35,17 +35,16 @@ export default function ArticleGalleryThree() {
     <article ref={articleRef} className={styles["component"]}>
       <UseCanvas>
         <ScrollScene track={articleRef as MutableRefObject<HTMLElement>} >
-          {({...props})=>(<group {...props}>
+          {({...props})=>(<group scale={props.scale.xy.min() * 0.2}>
               <mesh position={[0,0,0]} receiveShadow={true}>
-                {/* <boxGeometry args={[4,3,6]}  /> */}
-                <boxGeometry args={[1,1,1]}  />
+                <boxGeometry args={[4,3,6]}  />
                 <meshStandardMaterial roughness={0.2} metalness={0} side={THREE.BackSide} />
               </mesh>
               <Float>
-                <Suzanne position={[-1,1.5,-2]}/>
+                <Suzanne position={[-1,0,-2]}/>
               </Float>
               <Float>
-                <Suzanne position={[1,1.5,0]}/>
+                <Suzanne position={[1,0,0]}/>
               </Float>
 
             </group>
