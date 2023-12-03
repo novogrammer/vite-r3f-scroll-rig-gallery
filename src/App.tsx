@@ -3,7 +3,6 @@ import './App.css'
 import SectionAbout from './SectionAbout'
 import SectionGallery from './SectionGallery'
 import SectionHero from './SectionHero'
-import { useEffect } from 'react'
 import * as THREE from "three"
 import { useFrame } from '@react-three/fiber'
 
