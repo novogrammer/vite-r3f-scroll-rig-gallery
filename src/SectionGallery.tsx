@@ -20,6 +20,12 @@ export default function SectionGallery(){
         <div className={styles["component__article-wrapper"]}>
           <ArticleGalleryThree/>
         </div>
+        <div className={styles["component__article-wrapper"]}>
+          <ArticleGalleryImage/>
+        </div>
+        <div className={styles["component__article-wrapper"]}>
+          <ArticleGalleryThree/>
+        </div>
       </div>
     </div>
   )
