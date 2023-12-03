@@ -12,12 +12,11 @@ function MyDirectionalLight(){
   directionalLight.castShadow=true;
 
   const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-  directionalLightShadowHelper.visible=false;
   useFrame(()=>{
     const width=window.innerWidth;
     const height=window.innerHeight;
     directionalLight.shadow.camera.near=0.1;
-    directionalLight.shadow.camera.far=1000;
+    directionalLight.shadow.camera.far=2000;
     directionalLight.position.set(0,100,500);
     directionalLight.shadow.mapSize.set(1024,1024);
     directionalLight.shadow.camera.left=width*-0.5;
@@ -25,6 +24,7 @@ function MyDirectionalLight(){
     directionalLight.shadow.camera.top=height*+0.5 * 3;
     directionalLight.shadow.camera.bottom=height*-0.5 * 3;
     directionalLightShadowHelper.update();
+    directionalLightShadowHelper.visible=false;
   })
 
   return (<>
