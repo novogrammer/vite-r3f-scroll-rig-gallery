@@ -20,6 +20,7 @@ function Suzanne(props:Partial<PrimitiveProps>) {
     if(object3d instanceof THREE.Mesh){
       object3d.castShadow=true;
       object3d.receiveShadow=false;
+      object3d.material.side=THREE.FrontSide
     }
   })
   
@@ -27,10 +28,7 @@ function Suzanne(props:Partial<PrimitiveProps>) {
     <primitive {...merged}/>
   );
 }
-function MyBox(){
-  const w=6;
-  const h=4;
-  const d=6;
+function MyBox({children,w,h,d}:{children:JSX.Element[],w:number,h:number,d:number}){
   const boxGeometryInner=new THREE.BoxGeometry(w*0.999,h*0.999,d*0.999);
   boxGeometryInner.applyMatrix4(new THREE.Matrix4().makeScale(-1, 1, 1));
   const planeGeometryOuterLeft=new THREE.PlaneGeometry(d,h);
@@ -71,6 +69,7 @@ function MyBox(){
         <bufferGeometry {...boxGeometryOuter} />
         <meshBasicMaterial colorWrite={false} />
       </mesh>
+      {...children}
     </group>
   )
 
@@ -86,14 +85,14 @@ export default function ArticleGalleryThree() {
       <UseCanvas>
         <ScrollScene track={articleRef as MutableRefObject<HTMLElement>} >
           {({...props})=>(<group scale={props.scale.xy.min() * 0.25}>
-              <MyBox/>
-              <Float>
-                <Suzanne position={[-1,0.5,0 - 3]}/>
-              </Float>
-              <Float>
-                <Suzanne position={[1,-0.5,2 - 3]}/>
-              </Float>
-
+              <MyBox w={6} h={4} d={6}>
+                <Float>
+                  <Suzanne position={[-1,0.5,0]}/>
+                </Float>
+                <Float>
+                  <Suzanne position={[1,-0.5,2]}/>
+                </Float>
+              </MyBox>
             </group>
           )}
         </ScrollScene>
