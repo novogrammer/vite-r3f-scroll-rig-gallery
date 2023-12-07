@@ -10,7 +10,7 @@ import { Preload, SoftShadows } from '@react-three/drei'
 function MyDirectionalLight(){
 
   return (<directionalLight position={[0,1,5]} intensity={1.0} castShadow shadow-mapSize={[1024*2,1024*2]}>
-    <orthographicCamera attach="shadow-camera" args={[-2,2,2,-2]}/>
+    <orthographicCamera attach="shadow-camera" args={[-10,10,10,-10]}/>
   </directionalLight>);
 
 }
@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <div id="viewWrapper">
-        <Canvas shadows camera={{fov:20}} style={{pointerEvents:"none"}}>
+        <Canvas shadows camera={{fov:20,position:[0,0,20]}} style={{pointerEvents:"none"}}>
           <Scene/>
         </Canvas>
       </div>
