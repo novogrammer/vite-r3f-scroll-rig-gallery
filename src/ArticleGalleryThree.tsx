@@ -1,11 +1,12 @@
-import {  PrimitiveProps, useLoader } from "@react-three/fiber";
+import {  PrimitiveProps, useFrame, useLoader } from "@react-three/fiber";
 import styles from "./ArticleGalleryThree.module.scss";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Float } from "@react-three/drei";
-import { MutableRefObject, useRef } from "react";
-import { ScrollScene, UseCanvas } from "@14islands/r3f-scroll-rig";
+import {  useRef } from "react";
 import { BufferGeometryUtils } from "three/examples/jsm/Addons.js";
+import { TunnelR3f } from "./TunnelR3f";
+import { calcThreeWindowHeight } from "./three_utils";
 
 
 function Suzanne(props:Partial<PrimitiveProps>) {
@@ -75,29 +76,57 @@ function MyBox({children,w,h,d}:{children:JSX.Element[],w:number,h:number,d:numb
 
 }
 
+function ScrollGroup({track,threeHeight,children}:{track:React.RefObject<HTMLElement>,threeHeight:number,children:React.ReactNode[]|React.ReactNode}){
+  const groupRef=useRef<THREE.Group>(null);
+  useFrame((state/*,delta*/)=>{
+    if(track.current && groupRef.current){
+      const rect=track.current.getBoundingClientRect();
+      const {left,top,width,height}=rect;
+      const x=left+width/2;
+      const y=top+height/2;
+      const {camera}=state;
+      if(camera instanceof THREE.PerspectiveCamera){
+        const threeWindowHeight=calcThreeWindowHeight(camera);
+        const threeWindowWidth=threeWindowHeight*state.viewport.aspect;
+        const windowHeight=state.size.height;
+        // const windowWidth=state.size.height;
+        const toThreeLength=(domLength:number)=>domLength/windowHeight*threeWindowHeight;
+        const offsetY=threeWindowHeight/2 * -1;
+        const offsetX=threeWindowWidth/2 * -1;
+        groupRef.current.position.x=toThreeLength(x)+offsetX;
+        groupRef.current.position.y=(toThreeLength(y)+offsetY)*-1;
+        const scale=toThreeLength(height / threeHeight);
+        groupRef.current.scale.set(scale,scale,scale);
+      }
+    }
+  });
+  return (
+    <group ref={groupRef}>
+      {children}
+    </group>
+  );
+
+}
+
 // 3:2を前提にしている、高さ4m
 
 export default function ArticleGalleryThree() {
-  const articleRef = useRef<HTMLElement|null>(null);
+  const articleRef = useRef<HTMLElement>(null);
   
   return (
     <article ref={articleRef} className={styles["component"]}>
-      <UseCanvas>
-        <ScrollScene track={articleRef as MutableRefObject<HTMLElement>} >
-          {({...props})=>(<group scale={props.scale.xy.min() * 0.25}>
-              <MyBox w={6} h={4} d={6}>
-                <Float>
-                  <Suzanne position={[-1,0.5,0]}/>
-                </Float>
-                <Float>
-                  <Suzanne position={[1,-0.5,2]}/>
-                </Float>
-              </MyBox>
-            </group>
-          )}
-        </ScrollScene>
-      </UseCanvas>
-        
+      <TunnelR3f.In>
+      <ScrollGroup track={articleRef} threeHeight={4}>
+        <MyBox w={6} h={4} d={6}>
+          <Float>
+            <Suzanne position={[-1,0.5,0]}/>
+          </Float>
+          <Float>
+            <Suzanne position={[1,-0.5,2]}/>
+          </Float>
+        </MyBox>
+      </ScrollGroup>
+      </TunnelR3f.In>
       <h3 className={styles["component__title"]}>Article Three Title</h3>
     </article>
   );

@@ -1,10 +1,12 @@
-import { GlobalCanvas, SmoothScrollbar } from '@14islands/r3f-scroll-rig'
 import './App.css'
 import SectionAbout from './SectionAbout'
 import SectionGallery from './SectionGallery'
 import SectionHero from './SectionHero'
 import * as THREE from "three"
-import { useFrame } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { TunnelR3f } from './TunnelR3f'
+import { Preload } from '@react-three/drei'
+import { calcThreeWindowHeight } from './three_utils'
 
 function MyDirectionalLight(){
   const directionalLight=new THREE.DirectionalLight();
@@ -12,18 +14,21 @@ function MyDirectionalLight(){
   directionalLight.castShadow=true;
 
   const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-  useFrame(()=>{
-    const width=window.innerWidth;
-    const height=window.innerHeight;
-    directionalLight.shadow.camera.near=0.1;
-    directionalLight.shadow.camera.far=2000;
-    directionalLight.position.set(0,100,500);
-    directionalLight.shadow.mapSize.set(1024,1024);
-    directionalLight.shadow.camera.left=width*-0.5;
-    directionalLight.shadow.camera.right=width*+0.5;
-    directionalLight.shadow.camera.top=height*+0.5 * 3;
-    directionalLight.shadow.camera.bottom=height*-0.5 * 3;
-    directionalLightShadowHelper.update();
+  useFrame((state)=>{
+    const {camera}=state;
+    if(camera instanceof THREE.PerspectiveCamera){
+      const threeWindowHeight=calcThreeWindowHeight(camera);
+      const threeWindowWidth=threeWindowHeight*state.viewport.aspect;
+      directionalLight.shadow.camera.near=0.1;
+      directionalLight.shadow.camera.far=20;
+      directionalLight.position.set(0,1,5);
+      directionalLight.shadow.mapSize.set(1024,1024);
+      directionalLight.shadow.camera.left=threeWindowWidth*-0.5 * 2;
+      directionalLight.shadow.camera.right=threeWindowWidth*+0.5 * 2;
+      directionalLight.shadow.camera.top=threeWindowHeight*+0.5 * 3;
+      directionalLight.shadow.camera.bottom=threeWindowHeight*-0.5 * 3;
+      directionalLightShadowHelper.update();
+      }
     directionalLightShadowHelper.visible=false;
   })
 
@@ -38,14 +43,14 @@ function App() {
 
   return (
     <>
-      <GlobalCanvas shadows={true} camera={{fov:20}}>
-        <ambientLight intensity={0.6} />
-        <MyDirectionalLight/>
-
-      </GlobalCanvas>
-      <SmoothScrollbar config={{
-          duration:0.25,
-      }} />
+      <div id="viewWrapper">
+        <Canvas shadows={true} camera={{fov:20}} style={{pointerEvents:"none"}}>
+          <ambientLight intensity={0.6} />
+          <MyDirectionalLight/>
+          <TunnelR3f.Out/>
+          <Preload all/>
+        </Canvas>
+      </div>
       <SectionHero/>
       <SectionGallery/>
       <SectionAbout/>
