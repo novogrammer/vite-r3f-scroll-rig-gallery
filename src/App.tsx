@@ -13,7 +13,7 @@ function MyDirectionalLight(){
   directionalLight.castShadow=true;
 
   const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-  useFrame((state)=>{
+  useFrame(()=>{
     const width=window.innerWidth;
     const height=window.innerHeight;
     directionalLight.shadow.camera.near=0.1;
