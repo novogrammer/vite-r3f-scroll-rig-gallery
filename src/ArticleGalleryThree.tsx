@@ -60,7 +60,7 @@ function MyBox({children,w,h,d}:{children:JSX.Element[],w:number,h:number,d:numb
   ],false);
   boxGeometryInner.computeVertexNormals();
   return (
-    <group position={[0,0,0 - 3]}>
+    <group position={[0,0,0 + d * -0.5]}>
       <mesh receiveShadow={true}>
         <bufferGeometry {...boxGeometryInner} />
         <meshStandardMaterial roughness={0.2} metalness={0} />
