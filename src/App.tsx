@@ -68,7 +68,6 @@ function FovUpdateByFovx({fovx}:{fovx:number}){
 
 function App() {
   const [fov,setFov]=useState<FovState>(20);
-  useCanvasStore
   
   return (
     <>
