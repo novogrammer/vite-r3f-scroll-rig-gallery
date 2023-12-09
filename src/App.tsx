@@ -6,6 +6,8 @@ import * as THREE from "three"
 import { Canvas, useFrame } from '@react-three/fiber'
 import { TunnelR3f } from './TunnelR3f'
 import { Preload, SoftShadows } from '@react-three/drei'
+import {Physics} from "@react-three/rapier";
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 function MyDirectionalLight(){
 
@@ -46,12 +48,26 @@ function FovUpdateByFovx({fovx}:{fovx:number}){
 
 
 function App() {
+  const [physicsKey, setPhysicsKey] = useState<number>(0);
+
+  const resetPhysics=()=>setPhysicsKey((key)=>key+1);
+
+  useEffect(()=>{
+    const timerId=setInterval(()=>{
+      resetPhysics();
+    },1000);
+    return ()=>{
+      clearInterval(timerId);
+    }
+  })
 
   return (
     <>
       <div id="viewWrapper">
         <Canvas shadows camera={{position:[0,0,20]}} style={{pointerEvents:"none"}}>
-          <Scene/>
+          <Physics key={physicsKey} debug={true} gravity={[0,0,0]}>
+            <Scene/>
+          </Physics>
         </Canvas>
       </div>
       <SectionHero/>
